@@ -22,7 +22,7 @@ class HuggingFaceObjectParser(ObjectParser):
         self.generator = pipeline("text-generation", model=model_name, device_map="auto")
 
     def generate_response(self, prompt: str) -> str:
-        response = self.generator(prompt, max_length=512, do_sample=False)
+        response = self.generator(prompt, max_new_tokens=100, do_sample=False)
 
         # Gérer le cas où le modèle ne renvoie rien
         if response and "generated_text" in response[0]:
