@@ -1,10 +1,7 @@
 from aloha.object_parser.anthropic import Claude3HaikuObjectParser, Claude3OpusObjectParser, Claude3SonnetObjectParser
 from aloha.object_parser.base import ObjectParser
 from aloha.object_parser.openai import (
-    GPT4ObjectParser,
-    GPT4OObjectParser,
-    GPT4TurboObjectParser,
-    GPT35TurboObjectParser,
+    GPT35TurboObjectParser
 )
 from aloha.object_parser.spacy import SpacyObjectParser
 
