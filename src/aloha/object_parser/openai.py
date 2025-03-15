@@ -14,7 +14,7 @@ class HuggingFaceObjectParser(ObjectParser):
         self,
         num_target_examples: Optional[int] = 3,
         num_reference_examples: Optional[int] = 3,
-        model_name: str = "EleutherAI/gpt-neo-1.3B",  # Nouveau modèle ici
+        model_name: str = "EleutherAI/gpt-neo-125M",  # Nouveau modèle ici
     ):
         super().__init__(num_target_examples, num_reference_examples)
 
@@ -52,4 +52,4 @@ class HuggingFaceObjectParser(ObjectParser):
 # Remplacer GPT35TurboObjectParser par HuggingFaceObjectParser
 class GPT35TurboObjectParser(HuggingFaceObjectParser):
     def __init__(self, num_target_examples: Optional[int] = 3, num_reference_examples: Optional[int] = 3):
-        super().__init__(num_target_examples, num_reference_examples, model_name="EleutherAI/gpt-neo-1.3B")  # Nouveau modèle
+        super().__init__(num_target_examples, num_reference_examples, model_name="EleutherAI/gpt-neo-125M")  # Nouveau modèle
