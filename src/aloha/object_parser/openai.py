@@ -14,7 +14,7 @@ class HuggingFaceObjectParser(ObjectParser):
         self,
         num_target_examples: Optional[int] = 3,
         num_reference_examples: Optional[int] = 3,
-        model_name: str = "mistralai/Mistral-7B-Instruct",
+        model_name: str = "facebook/opt-1.3b",  # Nouveau modèle ici
     ):
         super().__init__(num_target_examples, num_reference_examples)
 
@@ -23,7 +23,11 @@ class HuggingFaceObjectParser(ObjectParser):
 
     def generate_response(self, prompt: str) -> str:
         response = self.generator(prompt, max_length=512, do_sample=False)
-        return response[0]["generated_text"].strip()
+
+        # Gérer le cas où le modèle ne renvoie rien
+        if response and "generated_text" in response[0]:
+            return response[0]["generated_text"].strip()
+        return "Error: No response generated"
 
     def extract_objects_single_caption(self, caption: str) -> str:
         prompt = SINGLE_OBJECT_SYSTEM_PROMPT
@@ -32,7 +36,6 @@ class HuggingFaceObjectParser(ObjectParser):
             prompt += f"\nUser: {user}\nAssistant: {system}"
 
         prompt += f"\nUser: Caption: {caption}\nObjects:"
-
         return self.generate_response(prompt)
 
     def extract_objects_multiple_captions(self, captions: List[str]) -> str:
@@ -43,11 +46,10 @@ class HuggingFaceObjectParser(ObjectParser):
 
         formatted_captions = "\n".join(f"- {caption}" for caption in captions)
         prompt += f"\nUser: Captions:\n{formatted_captions}\nObjects:"
-
         return self.generate_response(prompt)
 
 
 # Remplacer GPT35TurboObjectParser par HuggingFaceObjectParser
 class GPT35TurboObjectParser(HuggingFaceObjectParser):
     def __init__(self, num_target_examples: Optional[int] = 3, num_reference_examples: Optional[int] = 3):
-        super().__init__(num_target_examples, num_reference_examples, model_name="mistralai/Mistral-7B-Instruct")
+        super().__init__(num_target_examples, num_reference_examples, model_name="facebook/opt-1.3b")  # Nouveau modèle
