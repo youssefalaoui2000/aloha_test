@@ -14,15 +14,15 @@ class HuggingFaceObjectParser(ObjectParser):
         self,
         num_target_examples: Optional[int] = 3,
         num_reference_examples: Optional[int] = 3,
-        model_name: str = "EleutherAI/gpt-neo-125M",  # Nouveau modèle ici
+        model_name: str = "facebook/opt-1.3b",  # Nouveau modèle ici
     ):
         super().__init__(num_target_examples, num_reference_examples)
 
         # Charger le modèle de Hugging Face
-        self.generator = pipeline("text-generation", model=model_name, device_map="auto")
+        self.generator = pipeline("text-generation", model=model_name, device_map=0)
 
     def generate_response(self, prompt: str) -> str:
-        response = self.generator(prompt, max_new_tokens=100, do_sample=False)
+        response = self.generator(prompt, max_new_tokens=50, do_sample=False)
 
         # Gérer le cas où le modèle ne renvoie rien
         if response and "generated_text" in response[0]:
@@ -52,4 +52,4 @@ class HuggingFaceObjectParser(ObjectParser):
 # Remplacer GPT35TurboObjectParser par HuggingFaceObjectParser
 class GPT35TurboObjectParser(HuggingFaceObjectParser):
     def __init__(self, num_target_examples: Optional[int] = 3, num_reference_examples: Optional[int] = 3):
-        super().__init__(num_target_examples, num_reference_examples, model_name="EleutherAI/gpt-neo-125M")  # Nouveau modèle
+        super().__init__(num_target_examples, num_reference_examples, model_name="facebook/opt-1.3b")  # Nouveau modèle
